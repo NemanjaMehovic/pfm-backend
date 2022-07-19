@@ -1,3 +1,5 @@
+using pfm.Database.Entities;
+
 namespace pfm.Models;
 
 public class Transaction
@@ -9,7 +11,6 @@ public class Transaction
     public double amount {get; set;}
     public string description {get; set;}
     public string currency {get; set;}
-    public uint mcc {get; set;}
+    public string mcc {get; set;}
     public TransactionKind kind {get; set;}
-    public Categoty category {get; set;}
 }

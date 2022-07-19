@@ -1,4 +1,4 @@
-namespace pfm.Models;
+namespace pfm.Database.Entities;
 
 public enum TransactionDirection
 {

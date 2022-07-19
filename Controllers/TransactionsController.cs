@@ -14,9 +14,11 @@ public class TransactionsController : ControllerBase
     }
 
     [HttpPost("import")]
-    public async Task<IActionResult> import([FromBody] IFormFile file)
+    //[Consumes("application/csv")]
+    public async Task<IActionResult> import(Transaction transactions)
     {
-        return Ok("Test import");
+
+        return Ok(transactions.ToString());
     }
 
     [HttpPost("{id}/split")]

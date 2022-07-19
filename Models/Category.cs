@@ -1,6 +1,6 @@
 namespace pfm.Models;
 
-public class Categoty
+public class Category
 {
     public string code {get; set;}
     public string parent_code {get; set;}
