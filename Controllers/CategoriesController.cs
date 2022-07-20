@@ -17,6 +17,8 @@ public class CategoriesController : ControllerBase
     [Consumes("application/csv")]
     public async Task<IActionResult> import([FromBody] IEnumerable<Category> categories)
     {
+        if(categories is null)
+            return BadRequest();
         return Ok("Test import Categories");
     }
 }

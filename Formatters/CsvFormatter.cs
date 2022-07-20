@@ -5,6 +5,7 @@ using System.Text;
 using CsvHelper;
 using CsvHelper.Configuration;
 using Microsoft.AspNetCore.Mvc.Formatters;
+using Microsoft.VisualBasic;
 using pfm.Models;
 
 namespace pfm.Formatter;
@@ -25,49 +26,56 @@ public class CsvFormatter : InputFormatter
 
     public override async Task<InputFormatterResult> ReadRequestBodyAsync(InputFormatterContext context)
     {
-        string data = null;
-        using (var streamReader = context.ReaderFactory(context.HttpContext.Request.Body, Encoding.UTF8))
+        try
         {
-            data = await streamReader.ReadToEndAsync();
-        }
-
-        var type = context.ModelType.GetGenericArguments()[0];
-        var config = new CsvConfiguration(CultureInfo.InvariantCulture)
-        {
-            IgnoreBlankLines = false,
-        };
-        IList list = (IList)Activator.CreateInstance(typeof(List<>).MakeGenericType(type));
-
-        using (var reader = new StringReader(data))
-        using (var csv = new CsvReader(reader, config))
-        {
-            var methodList = typeof(CsvContext).GetMethods().Where(method => method.Name == nameof(CsvContext.RegisterClassMap));
-            MethodInfo methodInfo = null;
-            foreach (var method in methodList)
-                if (method.IsGenericMethod)
-                {
-                    methodInfo = method;
-                    break;
-                }
-            var allMaps = Assembly.GetExecutingAssembly().GetTypes().Where(t =>t.BaseType is not null && t.BaseType.IsGenericType && t.BaseType.GetGenericTypeDefinition() == typeof(ClassMap<>)).ToList();
-            foreach (var t in allMaps)
+            string data = null;
+            using (var streamReader = context.ReaderFactory(context.HttpContext.Request.Body, Encoding.UTF8))
             {
-                var method = methodInfo.MakeGenericMethod(t);
-                method.Invoke(csv.Context, null);
+                data = await streamReader.ReadToEndAsync();
             }
 
-            methodList = typeof(CsvReader).GetMethods().Where(method => method.Name == nameof(CsvReader.GetRecords));
-            foreach (var method in methodList)
-                if (method.IsGenericMethod)
+            var type = context.ModelType.GetGenericArguments()[0];
+            var config = new CsvConfiguration(CultureInfo.InvariantCulture)
+            {
+                IgnoreBlankLines = false,
+            };
+            IList list = (IList)Activator.CreateInstance(typeof(List<>).MakeGenericType(type));
+
+            using (var reader = new StringReader(data))
+            using (var csv = new CsvReader(reader, config))
+            {
+                var methodList = typeof(CsvContext).GetMethods().Where(method => method.Name == nameof(CsvContext.RegisterClassMap));
+                MethodInfo methodInfo = null;
+                foreach (var method in methodList)
+                    if (method.IsGenericMethod)
+                    {
+                        methodInfo = method;
+                        break;
+                    }
+                var allMaps = Assembly.GetExecutingAssembly().GetTypes().Where(t => t.BaseType is not null && t.BaseType.IsGenericType && t.BaseType.GetGenericTypeDefinition() == typeof(ClassMap<>)).ToList();
+                foreach (var t in allMaps)
                 {
-                    methodInfo = method;
-                    break;
+                    var method = methodInfo.MakeGenericMethod(t);
+                    method.Invoke(csv.Context, null);
                 }
-            methodInfo = methodInfo.MakeGenericMethod(type);
-            var tmpList = ((IEnumerable<object>)methodInfo.Invoke(csv, null)).ToList();
-            foreach(var tmp in tmpList)
-                list.Add(tmp);
+
+                methodList = typeof(CsvReader).GetMethods().Where(method => method.Name == nameof(CsvReader.GetRecords));
+                foreach (var method in methodList)
+                    if (method.IsGenericMethod)
+                    {
+                        methodInfo = method;
+                        break;
+                    }
+                methodInfo = methodInfo.MakeGenericMethod(type);
+                var tmpList = ((IEnumerable<object>)methodInfo.Invoke(csv, null)).ToList();
+                foreach (var tmp in tmpList)
+                    list.Add(tmp);
+            }
+            return InputFormatterResult.Success(list);
         }
-        return InputFormatterResult.Success(list);
+        catch (Exception e)
+        {
+            return InputFormatterResult.Failure();
+        }
     }
 }

@@ -17,6 +17,8 @@ public class TransactionsController : ControllerBase
     [Consumes("application/csv")]
     public async Task<IActionResult> import([FromBody] IEnumerable<Transaction> transactions)
     {
+        if(transactions is null)
+            return BadRequest();
         return Ok("Import transaction");
     }
 
