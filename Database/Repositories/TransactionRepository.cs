@@ -53,4 +53,12 @@ public class TransactionRepository : IRepository<TransactionEntity, string>
         await context.SaveChangesAsync();
         return items;
     }
+
+    public async Task<IEnumerable<TransactionEntity>> UpdateMultiple(IEnumerable<TransactionEntity> items)
+    {
+        foreach(var item in items)
+            context.transactions.Update(item);
+        await context.SaveChangesAsync();
+        return items;
+    }
 }

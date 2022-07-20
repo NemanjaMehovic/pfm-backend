@@ -53,4 +53,12 @@ public class SplitsRepository : IRepository<TransactionSplitsEntity, Tuple<strin
         await context.SaveChangesAsync();
         return items;
     }
+
+    public async Task<IEnumerable<TransactionSplitsEntity>> UpdateMultiple(IEnumerable<TransactionSplitsEntity> items)
+    {
+        foreach(var item in items)
+            context.transaction_splits.Update(item);
+        await context.SaveChangesAsync();
+        return items;
+    }
 }

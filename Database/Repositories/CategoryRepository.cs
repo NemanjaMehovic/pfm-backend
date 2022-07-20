@@ -53,4 +53,12 @@ public class CategoryRepository : IRepository<CategoryEntity, string>
         await context.SaveChangesAsync();
         return items;
     }
+
+    public async Task<IEnumerable<CategoryEntity>> UpdateMultiple(IEnumerable<CategoryEntity> items)
+    {
+        foreach(var item in items)
+            context.categories.Update(item);
+        await context.SaveChangesAsync();
+        return items;
+    }
 }

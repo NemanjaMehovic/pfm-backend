@@ -1,5 +1,7 @@
+using System.Security;
 using Microsoft.AspNetCore.Mvc;
 using pfm.Models;
+using pfm.Services;
 
 namespace pfm.Controllers;
 
@@ -7,18 +9,29 @@ namespace pfm.Controllers;
 [Route("/categories")]
 public class CategoriesController : ControllerBase
 {
-    [HttpGet]
-    public async Task<IActionResult> getCategories()
+    private ICategoryService service;
+
+    public CategoriesController(ICategoryService service)
     {
-        return Ok("Test Uspesan kategorije");
+        this.service = service;
+    }
+
+    [HttpGet]
+    public async Task<IActionResult> getCategories([FromQuery(Name = "parent-id")] string? parent_id)
+    {
+        var list = await service.SelectAll(parent_id);
+        return Ok(new { items = list });
     }
 
     [HttpPost("import")]
     [Consumes("application/csv")]
     public async Task<IActionResult> import([FromBody] IEnumerable<Category> categories)
     {
-        if(categories is null)
+        if (categories is null)
             return BadRequest();
-        return Ok("Test import Categories");
+        var list = await service.InsertMultiple(categories);
+        if (list is not null)
+            return StatusCode(440, new { message = list });
+        return Ok("Categories imported");
     }
 }

@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 using pfm.Database.Entities;
 
 namespace pfm.Models;
@@ -7,6 +8,7 @@ public class Transaction
 {
     [Required]
     public string? id { get; set; }
+    [JsonPropertyName("beneficiary-name")]
     public string? beneficiary_name { get; set; }
     [Required]
     public DateTime? date { get; set; }

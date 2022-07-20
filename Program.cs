@@ -1,11 +1,14 @@
 
+using System.Reflection;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Net.Http.Headers;
 using Npgsql;
 using pfm.Database;
+using pfm.Database.Entities;
+using pfm.Database.Repositories;
 using pfm.Formatter;
+using pfm.Services;
 
 namespace pfm
 {
@@ -16,15 +19,25 @@ namespace pfm
             var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container.
+            builder.Services.AddScoped<IRepository<CategoryEntity, string>, CategoryRepository>();
+            builder.Services.AddScoped<IRepository<TransactionEntity, string>, TransactionRepository>();
+            builder.Services.AddScoped<IRepository<TransactionSplitsEntity, Tuple<string, string>>, SplitsRepository>();
+
+            builder.Services.AddScoped<ICategoryService, CategoryService>();
+
+            builder.Services.AddAutoMapper(Assembly.GetExecutingAssembly());
+
             builder.Services.AddDbContext<PFMDbContext>(options =>
             {
                 options.UseNpgsql(GetConnectionString());
             });
+
             builder.Services.AddControllers().AddJsonOptions(options =>
             {
                 options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter(JsonNamingPolicy.CamelCase));
-                options.JsonSerializerOptions.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull;
+                //options.JsonSerializerOptions.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull;
             });
+
             builder.Services.AddMvc(options =>
             {
                 options.InputFormatters.Add(new CsvFormatter());
@@ -46,9 +59,21 @@ namespace pfm
 
             app.UseAuthorization();
 
+            InitializeDatabase(app);
+
             app.MapControllers();
 
             app.Run();
+        }
+
+        private static void InitializeDatabase(WebApplication app)
+        {
+            if (app.Environment.IsDevelopment())
+            {
+                using var scope = app.Services.GetService<IServiceScopeFactory>().CreateScope();
+
+                scope.ServiceProvider.GetRequiredService<PFMDbContext>().Database.Migrate();
+            }
         }
 
         private static string GetConnectionString()

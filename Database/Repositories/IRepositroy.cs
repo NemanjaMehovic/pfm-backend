@@ -15,4 +15,6 @@ public interface IRepository<T,V>
     Task<IEnumerable<T>> SelectAll();
 
     Task<IEnumerable<T>> InsertMultiple(IEnumerable<T> items);
+
+    Task<IEnumerable<T>> UpdateMultiple(IEnumerable<T> items);
 }
