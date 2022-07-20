@@ -8,9 +8,9 @@ namespace pfm.Database;
 public class PFMDbContext : DbContext
 {
 
-    DbSet<TransactionEntity> transactions { get; set; }
-    DbSet<CategoryEntity> categories { get; set; }
-    DbSet<TransactionSplitsEntity> transaction_splits { get; set; }
+    public DbSet<TransactionEntity> transactions { get; set; }
+    public DbSet<CategoryEntity> categories { get; set; }
+    public DbSet<TransactionSplitsEntity> transaction_splits { get; set; }
 
     public PFMDbContext()
     {
