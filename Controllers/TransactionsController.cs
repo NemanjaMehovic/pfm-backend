@@ -14,11 +14,10 @@ public class TransactionsController : ControllerBase
     }
 
     [HttpPost("import")]
-    //[Consumes("application/csv")]
-    public async Task<IActionResult> import(Transaction transactions)
+    [Consumes("application/csv")]
+    public async Task<IActionResult> import([FromBody] IEnumerable<Transaction> transactions)
     {
-
-        return Ok(transactions.ToString());
+        return Ok("Import transaction");
     }
 
     [HttpPost("{id}/split")]

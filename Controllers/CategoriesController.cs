@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using pfm.Models;
 
 namespace pfm.Controllers;
 
@@ -13,7 +14,8 @@ public class CategoriesController : ControllerBase
     }
 
     [HttpPost("import")]
-    public async Task<IActionResult> import([FromBody] IFormFile file)
+    [Consumes("application/csv")]
+    public async Task<IActionResult> import([FromBody] IEnumerable<Category> categories)
     {
         return Ok("Test import Categories");
     }

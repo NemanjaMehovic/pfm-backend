@@ -2,8 +2,10 @@
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Net.Http.Headers;
 using Npgsql;
 using pfm.Database;
+using pfm.Formatter;
 
 namespace pfm
 {
@@ -14,16 +16,18 @@ namespace pfm
             var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container.
-            GetConnectionString();
             builder.Services.AddDbContext<PFMDbContext>(options =>
             {
                 options.UseNpgsql(GetConnectionString());
             });
-
             builder.Services.AddControllers().AddJsonOptions(options =>
             {
                 options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter(JsonNamingPolicy.CamelCase));
                 options.JsonSerializerOptions.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull;
+            });
+            builder.Services.AddMvc(options =>
+            {
+                options.InputFormatters.Add(new CsvFormatter());
             });
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
