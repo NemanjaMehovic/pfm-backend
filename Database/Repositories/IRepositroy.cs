@@ -17,4 +17,8 @@ public interface IRepository<T,V>
     Task<IEnumerable<T>> InsertMultiple(IEnumerable<T> items);
 
     Task<IEnumerable<T>> UpdateMultiple(IEnumerable<T> items);
+
+    Task<bool> DeleteMultiple(IEnumerable<T> items);
+
+    PFMDbContext GetContext();
 }

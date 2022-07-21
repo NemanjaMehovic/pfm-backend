@@ -61,4 +61,17 @@ public class SplitsRepository : IRepository<TransactionSplitsEntity, Tuple<strin
         await context.SaveChangesAsync();
         return items;
     }
+
+    public async Task<bool> DeleteMultiple(IEnumerable<TransactionSplitsEntity> items)
+    {
+        foreach(var item in items)
+            context.transaction_splits.Remove(item);
+        await context.SaveChangesAsync();
+        return true;
+    }
+
+    public PFMDbContext GetContext()
+    {
+        return context;
+    }
 }

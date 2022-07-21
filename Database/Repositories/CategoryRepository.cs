@@ -61,4 +61,17 @@ public class CategoryRepository : IRepository<CategoryEntity, string>
         await context.SaveChangesAsync();
         return items;
     }
+
+    public async Task<bool> DeleteMultiple(IEnumerable<CategoryEntity> items)
+    {
+        foreach(var item in items)
+            context.categories.Remove(item);
+        await context.SaveChangesAsync();
+        return true;
+    }
+
+    public PFMDbContext GetContext()
+    {
+        return context;
+    }
 }

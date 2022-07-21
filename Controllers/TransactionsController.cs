@@ -1,4 +1,8 @@
+using System.Text.Json;
+using System.Text.Json.Nodes;
+using CsvHelper.Configuration.Attributes;
 using Microsoft.AspNetCore.Mvc;
+using pfm.Commands;
 using pfm.Models;
 using pfm.Services;
 
@@ -26,7 +30,7 @@ public class TransactionsController : ControllerBase
     [Consumes("application/csv")]
     public async Task<IActionResult> import([FromBody] IEnumerable<Transaction> transactions)
     {
-        if(transactions is null)
+        if (transactions is null)
             return BadRequest();
         var list = await service.InsertMultiple(transactions);
         if (list is not null)
@@ -35,15 +39,23 @@ public class TransactionsController : ControllerBase
     }
 
     [HttpPost("{id}/split")]
-    public async Task<IActionResult> split([FromRoute] string id)
+    [Consumes("application/json")]
+    public async Task<IActionResult> split([FromRoute] string id, [FromBody] SplitCommand splitsCommand)
     {
-        return Ok(id + " split");
+        var list = await service.Split(id, splitsCommand.splits);
+        if (list is not null)
+            return StatusCode(440, new { message = list });
+        return Ok("Transaction splitted");
     }
 
     [HttpPost("{id}/categorize")]
-    public async Task<IActionResult> categorize([FromRoute] string id)
+    [Consumes("application/json")]
+    public async Task<IActionResult> categorize([FromRoute] string id, [FromBody] CategorizeCommand categorizeCommand)
     {
-        return Ok(id + " categorize");
+        var list = await service.Categorize(id, categorizeCommand.catcode);
+        if (list is not null)
+            return StatusCode(440, new { message = list });
+        return Ok("Transaction categorized");
     }
 
     [HttpPost("auto-categorize")]

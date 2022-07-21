@@ -5,8 +5,6 @@ using System.Text;
 using CsvHelper;
 using CsvHelper.Configuration;
 using Microsoft.AspNetCore.Mvc.Formatters;
-using Microsoft.VisualBasic;
-using pfm.Models;
 
 namespace pfm.Formatter;
 
@@ -21,7 +19,7 @@ public class CsvFormatter : InputFormatter
     {
         if (!type.GetInterfaces().Any(i => { return i == typeof(IEnumerable); }))
             return false;
-        return Assembly.GetExecutingAssembly().GetTypes().Where(t => t.IsClass && t.Namespace == "pfm.Models").ToList().Contains(type.GetGenericArguments()[0]);
+        return type.IsGenericType && Assembly.GetExecutingAssembly().GetTypes().Where(t => t.IsClass && t.Namespace == "pfm.Models").ToList().Contains(type.GetGenericArguments()[0]);
     }
 
     public override async Task<InputFormatterResult> ReadRequestBodyAsync(InputFormatterContext context)

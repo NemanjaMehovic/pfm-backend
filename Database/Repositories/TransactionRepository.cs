@@ -61,4 +61,17 @@ public class TransactionRepository : IRepository<TransactionEntity, string>
         await context.SaveChangesAsync();
         return items;
     }
+
+    public async Task<bool> DeleteMultiple(IEnumerable<TransactionEntity> items)
+    {
+        foreach(var item in items)
+            context.transactions.Remove(item);
+        await context.SaveChangesAsync();
+        return true;
+    }
+
+    public PFMDbContext GetContext()
+    {
+        return context;
+    }
 }
