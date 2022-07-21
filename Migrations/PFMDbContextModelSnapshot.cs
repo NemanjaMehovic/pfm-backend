@@ -91,6 +91,9 @@ namespace pfm.Migrations
                     b.Property<string>("categoryId")
                         .HasColumnType("text");
 
+                    b.Property<double>("amount")
+                        .HasColumnType("double precision");
+
                     b.HasKey("transactionId", "categoryId");
 
                     b.HasIndex("categoryId");

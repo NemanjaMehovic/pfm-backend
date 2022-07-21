@@ -6,4 +6,5 @@ public class TransactionSplitsEntity
     public CategoryEntity category { get; set; }
     public string transactionId { get; set; }
     public TransactionEntity transaction { get; set; }
+    public double amount { get; set;}
 }

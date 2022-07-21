@@ -12,7 +12,7 @@ using pfm.Database;
 namespace pfm.Migrations
 {
     [DbContext(typeof(PFMDbContext))]
-    [Migration("20220719143642_Initial")]
+    [Migration("20220721150528_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -92,6 +92,9 @@ namespace pfm.Migrations
 
                     b.Property<string>("categoryId")
                         .HasColumnType("text");
+
+                    b.Property<double>("amount")
+                        .HasColumnType("double precision");
 
                     b.HasKey("transactionId", "categoryId");
 

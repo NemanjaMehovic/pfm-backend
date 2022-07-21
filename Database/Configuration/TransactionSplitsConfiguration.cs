@@ -12,6 +12,7 @@ public class TransactionSplitsConfiguration : IEntityTypeConfiguration<Transacti
         builder.HasKey(x => new { x.transactionId, x.categoryId });
         builder.Property(x => x.transactionId).IsRequired();
         builder.Property(x => x.categoryId).IsRequired();
+        builder.Property(x => x.amount).IsRequired();
         builder.HasOne(x => x.transaction).WithMany(x => x.splits).HasForeignKey(x => x.transactionId).IsRequired();
         builder.HasOne(x => x.category).WithMany(x => x.splits).HasForeignKey(x=>x.categoryId).IsRequired();
     }

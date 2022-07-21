@@ -52,7 +52,8 @@ namespace pfm.Migrations
                 columns: table => new
                 {
                     categoryId = table.Column<string>(type: "text", nullable: false),
-                    transactionId = table.Column<string>(type: "text", nullable: false)
+                    transactionId = table.Column<string>(type: "text", nullable: false),
+                    amount = table.Column<double>(type: "double precision", nullable: false)
                 },
                 constraints: table =>
                 {
