@@ -24,6 +24,7 @@ namespace pfm
             builder.Services.AddScoped<IRepository<TransactionSplitsEntity, Tuple<string, string>>, SplitsRepository>();
 
             builder.Services.AddScoped<ICategoryService, CategoryService>();
+            builder.Services.AddScoped<ITransactionService, TransactionService>();
 
             builder.Services.AddAutoMapper(Assembly.GetExecutingAssembly());
 

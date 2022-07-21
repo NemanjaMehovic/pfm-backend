@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using pfm.Models;
+using pfm.Services;
 
 namespace pfm.Controllers;
 
@@ -7,6 +8,14 @@ namespace pfm.Controllers;
 [Route("/transactions")]
 public class TransactionsController : ControllerBase
 {
+
+    private ITransactionService service;
+
+    public TransactionsController(ITransactionService service)
+    {
+        this.service = service;
+    }
+
     [HttpGet]
     public async Task<IActionResult> getTransactions()
     {
@@ -19,7 +28,10 @@ public class TransactionsController : ControllerBase
     {
         if(transactions is null)
             return BadRequest();
-        return Ok("Import transaction");
+        var list = await service.InsertMultiple(transactions);
+        if (list is not null)
+            return StatusCode(440, new { message = list });
+        return Ok("Transaction imported");
     }
 
     [HttpPost("{id}/split")]

@@ -11,5 +11,9 @@ public class AutoMapper:Profile
         CreateMap<Category, CategoryEntity>();
 
         CreateMap<CategoryEntity, Category>();
+
+        CreateMap<Transaction, TransactionEntity>();
+
+        CreateMap<TransactionEntity, Transaction>();
     }
 }
