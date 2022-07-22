@@ -4,7 +4,7 @@ using pfm.Models;
 
 namespace pfm.Mappings;
 
-public class AutoMapper:Profile
+public class AutoMapper : Profile
 {
     public AutoMapper()
     {
@@ -15,5 +15,11 @@ public class AutoMapper:Profile
         CreateMap<Transaction, TransactionEntity>();
 
         CreateMap<TransactionEntity, Transaction>();
+
+        CreateMap<TransactionSplitsEntity, Split>()
+        .ForMember(d => d.catcode, opts => opts.MapFrom(s => s.categoryId))
+        .ForMember(d => d.amount, opts => opts.MapFrom(s => s.amount));
+
+        CreateMap<TransactionEntity, TransactionsToSendBack>();
     }
 }

@@ -36,7 +36,7 @@ namespace pfm
             builder.Services.AddControllers().AddJsonOptions(options =>
             {
                 options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter(JsonNamingPolicy.CamelCase));
-                //options.JsonSerializerOptions.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull;
+                //options.JsonSerializerOptions.DefaultIgnoreCondition = JsonIgnoreCondition.Never;
             });
 
             builder.Services.AddMvc(options =>

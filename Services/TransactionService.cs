@@ -1,11 +1,11 @@
 using System.Globalization;
-using System.Linq.Expressions;
 using AutoMapper;
 using CsvHelper;
 using CsvHelper.Configuration;
 using pfm.Database.Entities;
 using pfm.Database.Repositories;
 using pfm.Models;
+using pfm.Controllers;
 
 namespace pfm.Services;
 
@@ -103,7 +103,7 @@ public class TransactionService : ITransactionService
         if (transaction.splits.Count() > 0)
             await repositorySplit.DeleteMultiple(transaction.splits);
         List<TransactionSplitsEntity> splitsEntities = new List<TransactionSplitsEntity>();
-        foreach(var split in splits)
+        foreach (var split in splits)
         {
             TransactionSplitsEntity tmp = new TransactionSplitsEntity();
             tmp.categoryId = split.catcode;
@@ -113,5 +113,67 @@ public class TransactionService : ITransactionService
         }
         await repositorySplit.InsertMultiple(splitsEntities);
         return null;
+    }
+
+    public async Task<TransactionsList> GetTransactions(TransactionKind? kind, DateTime? startTime, DateTime? endTime, string? sortBy, uint page, uint pageSize, SortOrderC order)
+    {
+        IEnumerable<TransactionEntity> transactions = await repositoryTransaction.SelectAll();
+        if (kind is not null)
+            transactions = transactions.Where(t => t.kind == kind);
+        if (startTime is not null)
+            transactions = transactions.Where(t => DateTime.Compare(t.date, (DateTime)startTime) >= 0);
+        if (endTime is not null)
+            transactions = transactions.Where(t => DateTime.Compare(t.date, (DateTime)endTime) <= 0);
+        if (sortBy is not null)
+        {
+            switch (sortBy)
+            {
+                case "id":
+                    transactions = order == SortOrderC.asc ? transactions.OrderBy(t => t.id) : transactions.OrderByDescending(t => t.id);
+                    break;
+                case "beneficiary-name":
+                    transactions = order == SortOrderC.asc ? transactions.OrderBy(t => t.beneficiary_name) : transactions.OrderByDescending(t => t.beneficiary_name);
+                    break;
+                case "date":
+                    transactions = order == SortOrderC.asc ? transactions.OrderBy(t => t.date) : transactions.OrderByDescending(t => t.date);
+                    break;
+                case "direction":
+                    transactions = order == SortOrderC.asc ? transactions.OrderBy(t => t.direction) : transactions.OrderByDescending(t => t.direction);
+                    break;
+                case "description":
+                    transactions = order == SortOrderC.asc ? transactions.OrderBy(t => t.description) : transactions.OrderByDescending(t => t.description);
+                    break;
+                case "currency":
+                    transactions = order == SortOrderC.asc ? transactions.OrderBy(t => t.currency) : transactions.OrderByDescending(t => t.currency);
+                    break;
+                case "mcc":
+                    transactions = order == SortOrderC.asc ? transactions.OrderBy(t => t.mcc) : transactions.OrderByDescending(t => t.mcc);
+                    break;
+                case "kind":
+                    transactions = order == SortOrderC.asc ? transactions.OrderBy(t => t.kind) : transactions.OrderByDescending(t => t.kind);
+                    break;
+                default:
+                    return null;
+            }
+        }
+        var totalPages = (int)Math.Ceiling(transactions.Count() * 1.0 / pageSize);
+        if(page > totalPages && totalPages != 0)
+            return null;
+        transactions = transactions.Skip(((int)page - 1) * (int)pageSize).Take((int)pageSize);
+        List<TransactionsToSendBack> list = new List<TransactionsToSendBack>();
+        foreach(var t in transactions)
+        {
+            await repositoryTransaction.GetContext().Entry(t).Collection(t => t.splits).LoadAsync();
+            list.Add(mapper.Map<TransactionEntity, TransactionsToSendBack>(t));
+        }
+        
+        return new TransactionsList{
+            page_size = pageSize,
+            page = page,
+            total_count = totalPages,
+            sort_by = sortBy,
+            sort_order = order,
+            items = list
+        };
     }
 }

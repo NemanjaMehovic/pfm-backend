@@ -1,8 +1,6 @@
-using System.Text.Json;
-using System.Text.Json.Nodes;
-using CsvHelper.Configuration.Attributes;
 using Microsoft.AspNetCore.Mvc;
 using pfm.Commands;
+using pfm.Database.Entities;
 using pfm.Models;
 using pfm.Services;
 
@@ -12,7 +10,7 @@ namespace pfm.Controllers;
 [Route("/transactions")]
 public class TransactionsController : ControllerBase
 {
-
+    
     private ITransactionService service;
 
     public TransactionsController(ITransactionService service)
@@ -21,9 +19,18 @@ public class TransactionsController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<IActionResult> getTransactions()
+    public async Task<IActionResult> getTransactions([FromQuery(Name = "transaction-kind")] TransactionKind? kind,
+                                                     [FromQuery(Name = "start-date")] DateTime? startTime,
+                                                     [FromQuery(Name = "end-date")] DateTime? endTime,
+                                                     [FromQuery(Name = "sort-by")] string? sortBy,
+                                                     [FromQuery(Name = "page")] uint page = 1,
+                                                     [FromQuery(Name = "page-size")] uint pageSize = 10,
+                                                     [FromQuery(Name = "sort-order")] SortOrderC order = SortOrderC.asc)
     {
-        return Ok("Test Uspesan tranzakcije");
+        var list = await service.GetTransactions(kind, startTime, endTime, sortBy, page, pageSize, order);
+        if (list is null || page == 0 || pageSize == 0)
+            return BadRequest();
+        return Ok(list);
     }
 
     [HttpPost("import")]
