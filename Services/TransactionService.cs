@@ -140,6 +140,9 @@ public class TransactionService : ITransactionService
                 case "direction":
                     transactions = order == SortOrderC.asc ? transactions.OrderBy(t => t.direction) : transactions.OrderByDescending(t => t.direction);
                     break;
+                case "amount":
+                    transactions = order == SortOrderC.asc ? transactions.OrderBy(t => t.amount) : transactions.OrderByDescending(t => t.amount);
+                    break;
                 case "description":
                     transactions = order == SortOrderC.asc ? transactions.OrderBy(t => t.description) : transactions.OrderByDescending(t => t.description);
                     break;
