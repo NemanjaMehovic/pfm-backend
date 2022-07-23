@@ -10,7 +10,7 @@ namespace pfm.Controllers;
 [Route("/transactions")]
 public class TransactionsController : ControllerBase
 {
-    
+
     private ITransactionService service;
 
     public TransactionsController(ITransactionService service)
@@ -27,9 +27,11 @@ public class TransactionsController : ControllerBase
                                                      [FromQuery(Name = "page-size")] uint pageSize = 10,
                                                      [FromQuery(Name = "sort-order")] SortOrderC order = SortOrderC.asc)
     {
-        var list = await service.GetTransactions(kind, startTime, endTime, sortBy, page, pageSize, order);
-        if (list is null || page == 0 || pageSize == 0)
+        if (page == 0 || pageSize == 0)
             return BadRequest();
+        var list = await service.GetTransactions(kind, startTime, endTime, sortBy, page, pageSize, order);
+        if (list is null)
+            return StatusCode(440, new { message = "Internal error" });
         return Ok(list);
     }
 

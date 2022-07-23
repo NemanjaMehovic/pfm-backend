@@ -20,6 +20,8 @@ public class CategoriesController : ControllerBase
     public async Task<IActionResult> getCategories([FromQuery(Name = "parent-id")] string? parent_id)
     {
         var list = await service.SelectAll(parent_id);
+        if(list is null )
+            return StatusCode(440, new { message = "Internal error" });
         return Ok(new { items = list });
     }
 

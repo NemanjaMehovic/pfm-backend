@@ -13,4 +13,6 @@ public interface ITransactionService
     public Task<string> Split(string transactionId, IEnumerable<Split> splits);
 
     public Task<TransactionsList> GetTransactions(TransactionKind? kind, DateTime? startTime, DateTime? endTime, string? sortBy, uint page, uint pageSize, SortOrderC order);
+
+    public Task<Analytics> GetAnalytics(TransactionDirection? direction, DateTime? startTime, DateTime? endTime, string? catcode);
 }
