@@ -128,6 +128,8 @@ public class TransactionService : ITransactionService
                 splitsEntities.Add(tmp);
             }
             await repositorySplit.InsertMultiple(splitsEntities);
+            transaction.categoryId = "Z";
+            await repositoryTransaction.Update(transaction);
             return null;
         }
         catch (Exception e)

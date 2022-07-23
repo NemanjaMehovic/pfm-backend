@@ -13,5 +13,6 @@ public class CategoryConfiguration : IEntityTypeConfiguration<CategoryEntity>
         builder.Property(x => x.code).IsRequired();
         builder.Property(x => x.parent_code);
         builder.Property(x => x.name).IsRequired();
+        builder.HasOne(x => x.parentCategory).WithMany().HasForeignKey(x => x.parent_code);
     }
 }
