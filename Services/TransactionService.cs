@@ -298,4 +298,18 @@ public class TransactionService : ITransactionService
             return false;
         }
     }
+
+    public async Task<bool> DeleteAll()
+    {
+        try
+        {
+            var tmp = await repositoryTransaction.SelectAll();
+            await repositoryTransaction.DeleteMultiple(tmp);
+            return true;
+        }
+        catch(Exception e)
+        {
+            return false;
+        }
+    }
 }

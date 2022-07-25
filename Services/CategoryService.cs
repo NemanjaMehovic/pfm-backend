@@ -83,4 +83,18 @@ public class CategoryService : ICategoryService
             return null;
         }
     }
+
+    public async Task<bool> DeleteAll()
+    {
+        try
+        {
+            var tmp = await repository.SelectAll();
+            await repository.DeleteMultiple(tmp);
+            return true;
+        }
+        catch(Exception e)
+        {
+            return false;
+        }
+    }
 }

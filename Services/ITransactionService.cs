@@ -15,4 +15,6 @@ public interface ITransactionService
     public Task<TransactionsList> GetTransactions(TransactionKind? kind, DateTime? startTime, DateTime? endTime, string? sortBy, uint page, uint pageSize, SortOrderC order);
 
     public Task<Analytics> GetAnalytics(TransactionDirection? direction, DateTime? startTime, DateTime? endTime, string? catcode);
+
+    public Task<bool> DeleteAll();
 }

@@ -36,4 +36,13 @@ public class CategoriesController : ControllerBase
             return StatusCode(440, new { message = list });
         return Ok("Categories imported");
     }
+
+    [HttpDelete]
+    public async Task<IActionResult> deleteAll()
+    {
+        var flag = await service.DeleteAll();
+        if(flag)
+            return Ok();
+        return StatusCode(440);
+    }
 }

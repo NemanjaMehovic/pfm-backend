@@ -1,0 +1,555 @@
+{
+	"info": {
+		"_postman_id": "4ca2a632-9ee5-4b14-8eee-e8626b990c89",
+		"name": "pfm_tests",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "delete_transactions",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "https://localhost:6160/transactions",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "6160",
+					"path": [
+						"transactions"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "delete_categories",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "https://localhost:6160/categories",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "6160",
+					"path": [
+						"categories"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "import_categories",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {
+					"content-type": true
+				}
+			},
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/csv",
+						"type": "default"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "code,parent-code,name\r\nA,,Misc Expenses\r\nB,,Auto & Transport\r\nC,,Bills & Utilities\r\nD,,Education\r\nE,,Entertainment\r\nF,,Fees & Charges\r\nG,,Financial\r\nE,,Food & Dining\r\nH,,Gifts & Donations\r\nI,,Health & Fitness\r\nJ,,Home\r\nK,,Income\r\nL,,Kids\r\nM,,Loans\r\nN,,Personal Care\r\nO,,Pets\r\nP,,Shopping\r\nR,,Taxes\r\nS,,Transfer\r\nT,,Travel\r\nZ,,Split\r\n0,A,Other\r\n1,B,Other\r\n2,B,Auto Insurance\r\n3,B,Auto Leasing\r\n4,B,Gas & Fuel\r\n5,B,Parking\r\n7,B,Service & Parts\r\n9,C,Home Phone\r\n10,C,Internet\r\n11,C,Mobile Phone\r\n12,C,Television\r\n13,C,Utilities\r\n15,D,Books & Supplies\r\n17,D,Tuition\r\n20,E,Arts\r\n21,E,Movies & DVDs\r\n22,E,Music\r\n23,E,Newspapers & Magazines\r\n25,F,ATM Fee\r\n26,F,Bank Fee\r\n28,F,Late Fee\r\n33,G,Life Insurance\r\n38,E,Groceries\r\n39,E,Restaurants\r\n41,H,Charity\r\n42,H,Gift\r\n44,I,Dentist\r\n45,I,Doctor\r\n46,I,Eyecare\r\n47,I,Gym\r\n48,I,Health Insurance\r\n49,I,Pharmacy\r\n50,I,Sports\r\n53,J,Home Improvement\r\n54,J,Home Insurance\r\n55,J,Home Services\r\n56,J,Home Supplies\r\n58,J,Mortgage & Rent\r\n59,K,Other\r\n60,K,Bonus\r\n61,K,Interest Income\r\n62,K,Paycheck\r\n64,K,Rental Income\r\n67,L,Allowance\r\n68,L,Baby Supplies\r\n71,L,Kids Activities\r\n72,L,Toys\r\n74,M,Loan Fees and Charges\r\n77,M,Loan Payment\r\n80,N,Hair\r\n82,N,Spa & Massage\r\n83,O,Other\r\n84,O,Pet Food & Supplies\r\n85,O,Pet Grooming\r\n86,O,Veterinary\r\n88,P,Books\r\n89,P,Clothing\r\n90,P,Electronics & Software\r\n92,P,Sporting Goods\r\n96,R,Property Tax\r\n98,R,Income Tax\r\n100,S,Credit Card Payment\r\n103,T,Air Travel\r\n104,T,Hotel\r\n105,T,Rental Car & Taxi\r\n106,T,Vacation\r\n",
+					"options": {
+						"raw": {
+							"language": "text"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:6160/categories/import",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "6160",
+					"path": [
+						"categories",
+						"import"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "import_transactions",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {
+					"content-type": true
+				}
+			},
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/csv",
+						"type": "default"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "id,beneficiary-name,date,direction,amount,description,currency,mcc,kind\r\n66229487,Faculty of contemporary arts,1/1/2021,d,187.20,Tuition,USD,8299,pmt\r\n15122088,Glovo,1/1/2021,d,44.30,Food delivery,USD,5811,pmt\r\n71233330,Glovo,1/1/2021,d,17.00,Food delivery,USD,5811,pmt\r\n24419286,Claire Stevens,1/1/2021,c,300.10,Monthly rent,USD,,dep\r\n31952674,Josh,1/1/2021,d,35.10,Allowance,USD,,pmt\r\n76053069,Hertz,1/1/2021,d,11.60,Taxi,USD,7519,pmt\r\n67251535,Book depository,1/2/2021,d,15.60,Amazon Kindle subscription,USD,,pmt\r\n51023898,Table tenis club PingPong,1/2/2021,d,12.30,Daily pool ticket,USD,5655,pmt\r\n19088602,Delhaize,1/3/2021,d,33.50,Supermaket shopping,USD,5499,pmt\r\n46251212,Swimming school,1/3/2021,d,22.00,Membership,USD,,pmt\r\n38450379,Blue moon spa,1/3/2021,d,22.50,Massage,USD,8050,pmt\r\n40474619,Adobe,1/3/2021,d,20.10,Games,USD,5045,pmt\r\n77280316,MetLife,1/4/2021,d,200.90,Life insurance premium,USD,6300,pmt\r\n62511511,City parkings,1/5/2021,d,2.30,Parking fee,USD,7523,pmt\r\n18709472,A1 Telecom,1/6/2021,d,6.90,Phone bill,USD,,pmt\r\n56500502,National Geographic,1/6/2021,d,4.80,National Geographic,USD,5192,pmt\r\n46134066,Revolut,1/6/2021,d,4.60,ATM withdrawal fee,USD,,fee\r\n28670410,Wolt,1/6/2021,d,48.40,Food delivery,USD,5811,pmt\r\n61393516,Dental Plus,1/6/2021,d,20.90,Doctor's appointment,USD,8011,pmt\r\n31930196,Claire Stevens,1/6/2021,c,300.10,Monthly rent,USD,,dep\r\n25661064,Swimming school,1/6/2021,d,27.10,Membership,USD,,pmt\r\n55836439,Faculty of contemporary arts,1/7/2021,d,185.50,Tuition,USD,8299,pmt\r\n16419247,Lidl,1/7/2021,d,33.10,Supermaket shopping,USD,5499,pmt\r\n78624056,Lidl,1/7/2021,d,36.80,Supermaket shopping,USD,5499,pmt\r\n70919477,Claire Stevens,1/7/2021,c,300.10,Monthly rent,USD,,dep\r\n65912072,Raiffeisen Leasing,1/8/2021,d,450.50,Financial leasing,USD,7394,pmt\r\n54545537,City parkings,1/8/2021,d,1.50,Parking fee,USD,7523,pmt\r\n24839524,Pet salon Rex,1/8/2021,d,10.30,Grooming,USD,,pmt\r\n50559764,A1 Telecom,1/9/2021,d,6.10,Phone bill,USD,,pmt\r\n66797216,Book depository,1/9/2021,d,126.10,Books,USD,,pmt\r\n74734869,Bank of America,1/9/2021,d,5.00,Revolut Silver subscription,USD,,fee\r\n26744744,Lidl,1/9/2021,d,33.90,Supermaket shopping,USD,5499,pmt\r\n38970077,Glovo,1/9/2021,d,31.30,Food delivery,USD,5811,pmt\r\n25182041,Wolt,1/9/2021,d,24.50,Food delivery,USD,5811,pmt\r\n17484730,Emmezeta,1/9/2021,d,41.90,Appliances,USD,5712,pmt\r\n13743307,Heating,1/10/2021,d,63.00,Utilities payment,USD,,pmt\r\n20670750,Revolut,1/10/2021,d,3.30,Revolut Silver subscription,USD,,fee\r\n61550061,Delhaize,1/10/2021,d,40.70,Supermaket shopping,USD,5499,pmt\r\n13793179,Lidl,1/10/2021,d,31.70,Supermaket shopping,USD,5499,pmt\r\n54803074,Glovo,1/10/2021,d,47.10,Food delivery,USD,5811,pmt\r\n62403764,Wolt,1/10/2021,d,20.20,Food delivery,USD,5811,pmt\r\n73316470,Wolt,1/10/2021,d,21.60,Food delivery,USD,5811,pmt\r\n45707636,Generali,1/10/2021,d,45.80,Extended health insurance,USD,,pmt"
+				},
+				"url": {
+					"raw": "https://localhost:6160/transactions/import",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "6160",
+					"path": [
+						"transactions",
+						"import"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "split_transaction",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"splits\": [\r\n    {\r\n      \"catcode\": \"A\",\r\n      \"amount\": 67.2\r\n    },\r\n    {\r\n      \"catcode\": \"B\",\r\n      \"amount\": 61\r\n    },\r\n    {\r\n      \"catcode\": \"C\",\r\n      \"amount\": 59\r\n    }\r\n  ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:6160/transactions/66229487/split",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "6160",
+					"path": [
+						"transactions",
+						"66229487",
+						"split"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "categorize_transaction",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"catcode\": \"1\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:6160/transactions/71233330/categorize",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "6160",
+					"path": [
+						"transactions",
+						"71233330",
+						"categorize"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get_categories",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const schema = {\r",
+							"  \"type\": \"object\",\r",
+							"  \"properties\": {\r",
+							"    \"items\": {\r",
+							"      \"type\": \"array\",\r",
+							"      \"items\": [\r",
+							"        {\r",
+							"          \"type\": \"object\",\r",
+							"          \"properties\": {\r",
+							"            \"code\": {\r",
+							"              \"type\": \"string\"\r",
+							"            },\r",
+							"            \"parent-code\": {\r",
+							"              \"type\": \"string\"\r",
+							"            },\r",
+							"            \"name\": {\r",
+							"              \"type\": \"string\"\r",
+							"            }\r",
+							"          },\r",
+							"          \"required\": [\r",
+							"            \"code\",\r",
+							"            \"parent-code\",\r",
+							"            \"name\"\r",
+							"          ]\r",
+							"        }\r",
+							"      ]\r",
+							"    }\r",
+							"  },\r",
+							"  \"required\": [\r",
+							"    \"items\"\r",
+							"  ]\r",
+							"};\r",
+							"\r",
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Categories Get Schema\", () => {\r",
+							"    pm.response.to.have.jsonSchema(schema)\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://localhost:6160/categories",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "6160",
+					"path": [
+						"categories"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get_transactions",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const schema = {\r",
+							"  \"type\": \"object\",\r",
+							"  \"properties\": {\r",
+							"    \"page-size\": {\r",
+							"      \"type\": \"integer\"\r",
+							"    },\r",
+							"    \"page\": {\r",
+							"      \"type\": \"integer\"\r",
+							"    },\r",
+							"    \"total-count\": {\r",
+							"      \"type\": \"integer\"\r",
+							"    },\r",
+							"    \"sort-by\": {\r",
+							"      \"type\": [\r",
+							"          \"string\",\r",
+							"          \"null\"\r",
+							"      ]\r",
+							"    },\r",
+							"    \"sort-order\": {\r",
+							"      \"type\": \"string\"\r",
+							"    },\r",
+							"    \"items\": {\r",
+							"      \"type\": \"array\",\r",
+							"      \"items\": [\r",
+							"        {\r",
+							"          \"type\": \"object\",\r",
+							"          \"properties\": {\r",
+							"            \"id\": {\r",
+							"              \"type\": \"string\"\r",
+							"            },\r",
+							"            \"beneficiary-name\": {\r",
+							"              \"type\": \"string\"\r",
+							"            },\r",
+							"            \"date\": {\r",
+							"              \"type\": \"string\"\r",
+							"            },\r",
+							"            \"direction\": {\r",
+							"              \"type\": \"string\"\r",
+							"            },\r",
+							"            \"amount\": {\r",
+							"              \"type\": \"number\"\r",
+							"            },\r",
+							"            \"description\": {\r",
+							"              \"type\": \"string\"\r",
+							"            },\r",
+							"            \"currency\": {\r",
+							"              \"type\": \"string\"\r",
+							"            },\r",
+							"            \"mcc\": {\r",
+							"              \"type\": [\r",
+							"                  \"string\",\r",
+							"                  \"null\"\r",
+							"              ]\r",
+							"            },\r",
+							"            \"kind\": {\r",
+							"              \"type\": \"string\"\r",
+							"            },\r",
+							"            \"splits\" : {\r",
+							"                \"type\" : \"array\",\r",
+							"                \"items\" : [\r",
+							"                    {\r",
+							"                        \"type\" : \"object\",\r",
+							"                        \"properties\" : {\r",
+							"                            \"catcode\" : {\r",
+							"                                \"type\": \"string\"\r",
+							"                            },\r",
+							"                            \"amount\" : {\r",
+							"                                \"type\": \"number\"\r",
+							"                            }\r",
+							"                        },\r",
+							"                        \"required\":[\r",
+							"                            \"catcode\",\r",
+							"                            \"amount\"\r",
+							"                        ]\r",
+							"                    }\r",
+							"                ]         \r",
+							"            }\r",
+							"          },\r",
+							"          \"required\": [\r",
+							"            \"id\",\r",
+							"            \"beneficiary-name\",\r",
+							"            \"date\",\r",
+							"            \"direction\",\r",
+							"            \"amount\",\r",
+							"            \"description\",\r",
+							"            \"currency\",\r",
+							"            \"kind\",\r",
+							"            \"splits\"\r",
+							"          ]\r",
+							"        }\r",
+							"      ]\r",
+							"    }\r",
+							"  },\r",
+							"  \"required\": [\r",
+							"    \"page-size\",\r",
+							"    \"page\",\r",
+							"    \"total-count\",\r",
+							"    \"sort-by\",\r",
+							"    \"sort-order\",\r",
+							"    \"items\"\r",
+							"  ]\r",
+							"};\r",
+							"\r",
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Transactions Get Schema\", () => {\r",
+							"    pm.response.to.have.jsonSchema(schema)\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://localhost:6160/transactions?sort-by=id&page=1&page-size=10&sort-order=desc",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "6160",
+					"path": [
+						"transactions"
+					],
+					"query": [
+						{
+							"key": "sort-by",
+							"value": "id"
+						},
+						{
+							"key": "page",
+							"value": "1"
+						},
+						{
+							"key": "page-size",
+							"value": "10"
+						},
+						{
+							"key": "sort-order",
+							"value": "desc"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get_analytics",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const schema = {\r",
+							"  \"type\": \"object\",\r",
+							"  \"properties\": {\r",
+							"    \"groups\": {\r",
+							"      \"type\": \"array\",\r",
+							"      \"items\": [\r",
+							"        {\r",
+							"          \"type\": \"object\",\r",
+							"          \"properties\": {\r",
+							"            \"catcode\": {\r",
+							"              \"type\": \"string\"\r",
+							"            },\r",
+							"            \"amount\": {\r",
+							"              \"type\": \"number\"\r",
+							"            },\r",
+							"            \"count\": {\r",
+							"              \"type\": \"number\"\r",
+							"            }\r",
+							"          },\r",
+							"          \"required\": [\r",
+							"            \"catcode\",\r",
+							"            \"amount\",\r",
+							"            \"count\"\r",
+							"          ]\r",
+							"        }\r",
+							"      ]\r",
+							"    }\r",
+							"  },\r",
+							"  \"required\": [\r",
+							"    \"groups\"\r",
+							"  ]\r",
+							"};\r",
+							"\r",
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Analytics Get Schema\", () => {\r",
+							"    pm.response.to.have.jsonSchema(schema)\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://localhost:6160/spending-analytics",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "6160",
+					"path": [
+						"spending-analytics"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

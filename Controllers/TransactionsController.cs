@@ -67,6 +67,15 @@ public class TransactionsController : ControllerBase
         return Ok("Transaction categorized");
     }
 
+    [HttpDelete]
+    public async Task<IActionResult> deleteAll()
+    {
+        var flag = await service.DeleteAll();
+        if(flag)
+            return Ok();
+        return StatusCode(440);
+    }
+
     [HttpPost("auto-categorize")]
     public async Task<IActionResult> auto_categorize()
     {
