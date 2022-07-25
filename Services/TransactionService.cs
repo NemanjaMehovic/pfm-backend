@@ -6,6 +6,7 @@ using pfm.Database.Entities;
 using pfm.Database.Repositories;
 using pfm.Models;
 using pfm.Controllers;
+using System.Reflection.Metadata.Ecma335;
 
 namespace pfm.Services;
 
@@ -211,7 +212,7 @@ public class TransactionService : ITransactionService
         }
     }
 
-    public async Task<Analytics> GetAnalytics(TransactionDirection? direction, DateTime? startTime, DateTime? endTime, string catcode)
+    public async Task<Analytics> GetAnalytics(TransactionDirection? direction, DateTime? startTime, DateTime? endTime, string? catcode)
     {
         try
         {
@@ -223,13 +224,78 @@ public class TransactionService : ITransactionService
                 transactions = transactions.Where(t => DateTime.Compare(t.date, (DateTime)endTime) <= 0);
             if (direction is not null)
                 transactions = transactions.Where(t => t.direction == direction);
+            if (catcode is not null)
+                categories = categories.Where(c => c.code == catcode);
 
+            Dictionary<string, CategoriesAnalytics> map = new Dictionary<string, CategoriesAnalytics>();
+            foreach (var c in categories)
+                map[c.code] = new CategoriesAnalytics
+                {
+                    catcode = c.code,
+                    amount = 0,
+                    count = 0
+                };
 
-            throw new NotImplementedException();
+            foreach (var t in transactions)
+            {
+                if (t.categoryId is null)
+                    continue;
+                bool flag;
+                if (t.categoryId == "Z")
+                {
+                    await repositoryTransaction.GetContext().Entry(t).Collection(t => t.splits).LoadAsync();
+                    foreach (var split in t.splits)
+                    {
+                        await repositorySplit.GetContext().Entry(split).Reference(s => s.category).LoadAsync();
+                        flag = await FillAnalytics(map, split.amount, split.category);
+                        if(!flag)
+                            throw new Exception();
+                    }
+                }
+                await repositoryTransaction.GetContext().Entry(t).Reference(t => t.category).LoadAsync();
+                flag = await FillAnalytics(map, t.amount, t.category);
+                if (!flag)
+                    throw new Exception();
+            }
+            List<CategoriesAnalytics> categoriesAnalytics = new List<CategoriesAnalytics>();
+            foreach(var pair in map)
+                categoriesAnalytics.Add(pair.Value);
+            return new Analytics{
+                groups = categoriesAnalytics
+            };
         }
         catch (Exception e)
         {
             return null;
+        }
+    }
+
+    private async Task<bool> FillAnalytics(Dictionary<string, CategoriesAnalytics> map, double amount, CategoryEntity category)
+    {
+        try
+        {
+            CategoryEntity tmpCat = category;
+            while (tmpCat != null)
+            {
+                CategoriesAnalytics tmpAnaly = null;
+                if (map.TryGetValue(tmpCat.code, out tmpAnaly))
+                {
+                    tmpAnaly.count++;
+                    tmpAnaly.amount += amount;
+                }
+                if (tmpCat.parent_code is not null)
+                {
+                    await repositoryCategory.GetContext().Entry(tmpCat).Reference(c => c.parentCategory).LoadAsync();
+                    tmpCat = tmpCat.parentCategory;
+                }
+                else
+                    tmpCat = null;
+            }
+            return true;
+        }
+        catch (Exception e)
+        {
+            return false;
         }
     }
 }
