@@ -20,6 +20,7 @@ public class AutoMapper : Profile
         .ForMember(d => d.catcode, opts => opts.MapFrom(s => s.categoryId))
         .ForMember(d => d.amount, opts => opts.MapFrom(s => s.amount));
 
-        CreateMap<TransactionEntity, TransactionsToSendBack>();
+        CreateMap<TransactionEntity, TransactionsToSendBack>()
+        .ForMember(d => d.catcode, opts => opts.MapFrom(t => t.categoryId));
     }
 }
