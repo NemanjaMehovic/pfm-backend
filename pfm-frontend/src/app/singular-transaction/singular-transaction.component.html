@@ -1,0 +1,32 @@
+<div class="row justify-content-center">
+    <div class="col-6">
+        <div class="row">
+            <div class="col-6">
+                {{transaction.beneficiary_name}}
+                {{transaction.direction}}
+            </div>
+            <div class="col-6">
+                <p style="text-align: right;">  
+                    {{transaction.amount}}
+                    {{transaction.currency}}
+                </p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">{{date()}}</div>
+        </div>
+        <div *ngIf="transaction.catcode == null" class="row">
+            <div class="col-6">
+                <select class="form-select" name="sortOrder" [(ngModel)]="catcode">
+                    <option *ngFor="let i of categories; index as ind" [value]="i.code">{{i.name}}</option>
+                </select>
+            </div>
+            <div class="col-6">
+                <button class="btn btn-primary" (click)="categorize()">Categorize</button>
+            </div>
+        </div>
+        <div *ngIf="transaction.catcode != null" class="row">
+            <div class="col-12">{{nameOfCategory(transaction.catcode)}}</div>
+        </div>
+    </div>
+</div>

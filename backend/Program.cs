@@ -58,6 +58,11 @@ namespace pfm
 
             app.UseHttpsRedirection();
 
+            app.UseCors(x => {
+                x.AllowAnyOrigin();
+                x.AllowAnyHeader();
+            });
+
             app.UseAuthorization();
 
             InitializeDatabase(app);

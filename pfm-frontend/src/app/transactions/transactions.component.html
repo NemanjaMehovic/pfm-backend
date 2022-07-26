@@ -1,0 +1,41 @@
+<div class="row justify-content-center">
+    <div class="col-6">
+        <form #transactionForm="ngForm">
+            <div class="mb-3">
+                <label class="form-label">Kind</label>
+                <select class="form-select" name="tip" ngModel>
+                    <option *ngFor="let i of tip; index as ind" [value]="i">{{i}}</option>
+                </select>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Sort by</label>
+                <select class="form-select" name="sortBy" ngModel>
+                    <option *ngFor="let i of sortBy; index as ind" [value]="i">{{i}}</option>
+                </select>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Sort order</label>
+                <select class="form-select" name="sortOrder" ngModel>
+                    <option *ngFor="let i of sortOrder; index as ind" [value]="i">{{i}}</option>
+                </select>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Start date</label>
+                <input type="date" class="form-control" name="startDate" ngModel>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">End Date</label>
+                <input type="date" class="form-control" name="endDate" ngModel>
+            </div>
+            <button class="btn btn-primary mb-3" (click)="search(transactionForm)">Submit</button>
+        </form>
+    </div>
+</div>
+<div class="row justify-content-center mb-3">
+    <div class="col-2 d-flex justify-content-center"><button class="btn btn-primary" (click)="prev()">Prev</button></div>
+    <div class="col-2 d-flex justify-content-center">Page {{currPageNum}} of {{maxPages}}</div>
+    <div class="col-2 d-flex justify-content-center"><button class="btn btn-primary" (click)="next()">Next</button></div>
+</div>
+<div *ngFor="let transaction of transactionList.items" class="row justify-content-center mb-3">
+    <app-singular-transaction [categories]="categories" [transaction]="transaction"></app-singular-transaction>
+</div>
