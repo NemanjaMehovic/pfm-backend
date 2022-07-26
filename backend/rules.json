@@ -1,0 +1,10 @@
+[
+    {
+        "catcode": "4",
+        "predicate": "beneficiary_name LIKE '%chevron%' OR beneficiary_name LIKE '%shell%'"
+    },
+    {
+        "catcode": "39",
+        "predicate": "mcc like '5811'"
+    }
+]

@@ -17,4 +17,6 @@ public interface ITransactionService
     public Task<Analytics> GetAnalytics(TransactionDirection? direction, DateTime? startTime, DateTime? endTime, string? catcode);
 
     public Task<bool> DeleteAll();
+
+    public Task<bool> AutoCategorize();
 }

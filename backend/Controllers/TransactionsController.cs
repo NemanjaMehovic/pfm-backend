@@ -79,6 +79,9 @@ public class TransactionsController : ControllerBase
     [HttpPost("auto-categorize")]
     public async Task<IActionResult> auto_categorize()
     {
-        return Ok("auto-categorize");
+        var flag = await service.AutoCategorize();
+        if(flag)
+            return Ok("Transaction auto categorized");
+        return StatusCode(440);
     }
 }

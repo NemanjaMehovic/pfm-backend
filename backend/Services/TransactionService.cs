@@ -7,6 +7,9 @@ using pfm.Database.Repositories;
 using pfm.Models;
 using pfm.Controllers;
 using System.Reflection.Metadata.Ecma335;
+using System.Text.Json.Serialization;
+using System.Text.Json;
+using Microsoft.EntityFrameworkCore;
 
 namespace pfm.Services;
 
@@ -14,6 +17,7 @@ public class TransactionService : ITransactionService
 {
 
     private static List<MCC> MCCs;
+    private static List<Rule> Rules;
     private IMapper mapper;
     private IRepository<TransactionEntity, string> repositoryTransaction;
     private IRepository<CategoryEntity, string> repositoryCategory;
@@ -34,6 +38,11 @@ public class TransactionService : ITransactionService
         {
             csv.Context.RegisterClassMap<MCCMap>();
             MCCs = csv.GetRecords<MCC>().ToList();
+        }
+        using (StreamReader r = new StreamReader("rules.json"))
+        {
+            string json = r.ReadToEnd();
+            Rules = JsonSerializer.Deserialize<List<Rule>>(json);
         }
     }
 
@@ -248,7 +257,7 @@ public class TransactionService : ITransactionService
                     {
                         await repositorySplit.GetContext().Entry(split).Reference(s => s.category).LoadAsync();
                         flag = await FillAnalytics(map, split.amount, split.category);
-                        if(!flag)
+                        if (!flag)
                             throw new Exception();
                     }
                 }
@@ -258,9 +267,10 @@ public class TransactionService : ITransactionService
                     throw new Exception();
             }
             List<CategoriesAnalytics> categoriesAnalytics = new List<CategoriesAnalytics>();
-            foreach(var pair in map)
+            foreach (var pair in map)
                 categoriesAnalytics.Add(pair.Value);
-            return new Analytics{
+            return new Analytics
+            {
                 groups = categoriesAnalytics
             };
         }
@@ -305,6 +315,26 @@ public class TransactionService : ITransactionService
         {
             var tmp = await repositoryTransaction.SelectAll();
             await repositoryTransaction.DeleteMultiple(tmp);
+            return true;
+        }
+        catch (Exception e)
+        {
+            return false;
+        }
+    }
+
+    public async Task<bool> AutoCategorize()
+    {
+        try
+        {
+            foreach(var rule in Rules)
+            {
+                var list = await repositoryTransaction.GetContext().transactions.FromSqlRaw("Select * from transactions where transactions.\"categoryId\" is null and ( " + rule.predicate + " )").ToListAsync();
+                foreach(var transaction in list)
+                    transaction.categoryId = rule.catcode;
+                if(list.Count() > 0)
+                    await repositoryTransaction.UpdateMultiple(list);
+            }
             return true;
         }
         catch(Exception e)
