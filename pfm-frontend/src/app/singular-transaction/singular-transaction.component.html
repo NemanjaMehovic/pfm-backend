@@ -1,9 +1,9 @@
 <div class="row justify-content-center">
-    <div class="col-6">
+    <div class="col-6 bg-info">
         <div class="row">
             <div class="col-6">
                 {{transaction.beneficiary_name}}
-                {{transaction.direction}}
+                ({{transaction.direction == 'd' ? 'Debit' : 'Credit'}})
             </div>
             <div class="col-6">
                 <p style="text-align: right;">  
@@ -15,7 +15,7 @@
         <div class="row">
             <div class="col-12">{{date()}}</div>
         </div>
-        <div *ngIf="transaction.catcode == null" class="row">
+        <div *ngIf="transaction.catcode == null" class="row mb-3">
             <div class="col-6">
                 <select class="form-select" name="sortOrder" [(ngModel)]="catcode">
                     <option *ngFor="let i of categories; index as ind" [value]="i.code">{{i.name}}</option>
@@ -25,8 +25,9 @@
                 <button class="btn btn-primary" (click)="categorize()">Categorize</button>
             </div>
         </div>
-        <div *ngIf="transaction.catcode != null" class="row">
-            <div class="col-12">{{nameOfCategory(transaction.catcode)}}</div>
+        <div *ngIf="transaction.catcode != null" class="row mb-3">
+            <div *ngIf="transaction.catcode != 'Z'" class="col-12">{{nameOfCategory(transaction.catcode)}}</div>
+            <span *ngFor="let split of transaction.splits">{{nameOfCategory(split.catcode != undefined ? split.catcode : "")}} ({{split.amount}})</span>
         </div>
     </div>
 </div>
