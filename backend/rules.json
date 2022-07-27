@@ -6,5 +6,37 @@
     {
         "catcode": "39",
         "predicate": "mcc like '5811'"
-    }
+    },
+	{
+		"catcode": "P",
+		"predicate": "mcc like '5499' OR mcc like '5200'"
+	},
+	{
+		"catcode": "C",
+		"predicate": "description like 'Mobile phone bill' OR description like 'Phone bill'"
+	},
+	{
+		"catcode": "5",
+		"predicate": "mcc like '7523'"
+	},
+	{
+		"catcode": "11",
+		"predicate": "description like 'Television bill'"
+	},
+	{
+		"catcode": "47",
+		"predicate": "beneficiary_name like 'Fit and Fun'"
+	},
+	{
+		"catcode": "13",
+		"predicate": "description like 'Utilities payment'"
+	},
+	{
+		"catcode": "23",
+		"predicate": "mcc like '5192'"
+	},
+	{
+		"catcode": "55",
+		"predicate": "beneficiary_name like 'Home cleaning service'"
+	}
 ]

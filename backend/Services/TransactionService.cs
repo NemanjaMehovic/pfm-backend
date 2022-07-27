@@ -327,17 +327,23 @@ public class TransactionService : ITransactionService
     {
         try
         {
-            foreach(var rule in Rules)
+            var tmpList = await repositoryCategory.SelectAll();
+            foreach (var rule in Rules)
+            {
+                if (!tmpList.Any(c => c.code == rule.catcode))
+                    return false;
+            }
+            foreach (var rule in Rules)
             {
                 var list = await repositoryTransaction.GetContext().transactions.FromSqlRaw("Select * from transactions where transactions.\"categoryId\" is null and ( " + rule.predicate + " )").ToListAsync();
-                foreach(var transaction in list)
+                foreach (var transaction in list)
                     transaction.categoryId = rule.catcode;
-                if(list.Count() > 0)
+                if (list.Count() > 0)
                     await repositoryTransaction.UpdateMultiple(list);
             }
             return true;
         }
-        catch(Exception e)
+        catch (Exception e)
         {
             return false;
         }
